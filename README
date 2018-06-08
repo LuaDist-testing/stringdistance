@@ -1,0 +1,27 @@
+# Equipe CCPA
+
+Module stringdistance  - C implementation of functions to calculae the distance between two strings using the Damerau-Levenshtein algorithm
+
+#Compilling
+$ make
+
+#Use
+require"stringdistance"
+
+
+
+-- lev (str1, str2)
+-- Calculate the distance using Levenshtein algorithm
+distance = lev(str1, str2) 
+
+
+-- dam (str1, str2)
+-- Calculate the distance using Damerau-Levenshtein algorithm
+distance = dam(str1, str2) 
+
+#Test
+After compilling
+$ lua tests/test.lua
+
+"Test completed successfully!" 
+This menssage will be presented if the package is working.
