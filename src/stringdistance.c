@@ -1,6 +1,6 @@
 /* linha de compilacao:
  * gcc -I/usr/local/include -shared -fPIC -Wall -O2 -o stringdistance.so stringdistance.c
- * $Id: stringdistance.c,v 1.7 2011-02-08 18:30:41 mmota Exp $
+ * $Id: stringdistance.c,v 1.8 2011-12-21 13:35:37 tomas Exp $
  */
 
 #include <stdlib.h>
@@ -10,8 +10,8 @@
 #include "lauxlib.h"
 
 #define SD_NAME "String Distance is a Lua implementation of the Damerau-Levenshtein and Levenshtein algorithms"
-#define SD_VERSION "1.0.0"
-#define SD_RELEASE "$Id: stringdistance.c,v 1.7 2011-02-08 18:30:41 mmota Exp $"
+#define SD_VERSION "1.1.0"
+#define SD_RELEASE "$Id: stringdistance.c,v 1.8 2011-12-21 13:35:37 tomas Exp $"
 
 
 /* Auxiliar functions to Get the minimum between values */
@@ -147,7 +147,11 @@ static int _lev(lua_State *L) {
 	const char *s2 = luaL_checkstring(L, 2);
 	lua_settop(L, 2);  /* erase extra arguments */
 	dist = levenshtein(s1, s2);
-	lua_pushinteger(L, (int) dist);
+#if defined(lua_pushinteger)
+	lua_pushinteger(L, dist); /* Lua >= 5.1 */
+#else
+	lua_pushnumber(L, dist); /* Lua 5.0 */
+#endif
 	return 1;
 }
 
@@ -157,23 +161,36 @@ static int _damerauLevenshtein(lua_State *L) {
 	const char *s2 = luaL_checkstring(L, 2);
 	lua_settop(L, 2);  /* erase extra arguments */
 	dist = damerauLevenshtein(s1, s2);
-	lua_pushinteger(L, (int) dist);
+#if defined(lua_pushinteger)
+	lua_pushinteger(L, dist); /* Lua >= 5.1 */
+#else
+	lua_pushnumber(L, dist); /* Lua 5.0 */
+#endif
 	return 1;
 }
 
-static const struct luaL_Reg stringdistance [] = {
-	{"lev", _lev},
-	{"dam", _damerauLevenshtein},
-	{NULL, NULL},
-};
 
 int luaopen_stringdistance (lua_State *L) {
-	luaL_register(L, "stringdistance", stringdistance);
-	lua_pushliteral(L, SD_VERSION);
-	lua_setfield(L, -2, "_VERSION"); /* stringdistance._VERSION = LEV_VERSION */
-	lua_pushliteral(L, SD_NAME);
-	lua_setfield(L, -2, "_NAME"); /* stringdistance._NAME = LEV_NAME */
-	lua_pushliteral(L, SD_RELEASE);
-	lua_setfield(L, -2, "_RELEASE"); /* stringdistance._RELEASE = LEV_RELEASE */
+	lua_newtable(L);
+
+	lua_pushstring(L, "lev");
+	lua_pushcfunction(L, _lev);
+	lua_settable(L, -3); /* _M.lev = _lev */
+
+	lua_pushstring(L, "dam");
+	lua_pushcfunction(L, _damerauLevenshtein);
+	lua_settable(L, -3); /* _M.dam = _damerauLevenshtein */
+
+	lua_pushstring(L, "_VERSION");
+	lua_pushstring(L, SD_VERSION);
+	lua_settable(L, -3); /* _M._VERSION = LEV_VERSION */
+
+	lua_pushstring(L, "_NAME");
+	lua_pushstring(L, SD_NAME);
+	lua_settable(L, -3); /* _M._NAME = LEV_NAME */
+
+	lua_pushstring(L, "_RELEASE");
+	lua_pushstring(L, SD_RELEASE);
+	lua_settable(L, -3); /* _M._RELEASE = LEV_RELEASE */
 	return 1;
 }

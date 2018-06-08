@@ -1,16 +1,16 @@
 -- This file was automatically generated for the LuaDist project.
 
 package = "stringdistance"
-version = "1.0.0-1"
+version = "1.1.0-1"
 -- LuaDist source
 source = {
-  tag = "1.0.0-1",
+  tag = "1.1.0-1",
   url = "git://github.com/LuaDist-testing/stringdistance.git"
 }
 -- Original source
 -- source = {
---   url = "http://www.ccpa.puc-rio.br/software/stringdistance/download/stringdistance-1.0.tar.gz",
---   md5 = "e880e4521c6876d9885bafceeada40e8",
+--   url = "http://www.ccpa.puc-rio.br/software/stringdistance/download/stringdistance-1.1.0.tar.gz",
+--   md5 = "e7d9448bd61c44f99d6de93f20ddaaa7",
 -- }
 description = {
 	summary = "Damerau-Leveinshtein Distance",
@@ -18,10 +18,10 @@ description = {
 		String Distance is a package that offers two algorithms to calculate string distances: Levenshtein and Damerau-Levenshtein.
 	]],
 	license = "MIT/X11",
-	homepage = "http://www.ccpa.puc-rio.br/software/stringdistance"
+	homepage = "http://www.ccpa.puc-rio.br/software/stringdistance",
 }
 dependencies = {
-	"lua >= 5.1"
+	"lua >= 5.0"
 }
 build = {
 	type = "builtin",

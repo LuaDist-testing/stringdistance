@@ -1,6 +1,11 @@
---$Id: test.lua,v 1.10 2011-02-08 18:30:41 mmota Exp $
-local l = require"stringdistance"
-print("Testing "..l._NAME:match("^%w+ %w+").." version "..l._VERSION.." release "..l._RELEASE)
+--$Id: test.lua,v 1.11 2011-12-21 13:35:37 tomas Exp $
+local l
+if string.find(_VERSION, "Lua 5.0") then
+	l = assert(loadlib("./stringdistance.so", "luaopen_stringdistance"))()
+else
+	l = require"stringdistance"
+end
+print(string.format("Testing %s version %s release %s with %s", string.sub(l._NAME, string.find(l._NAME, "^%w+ %w+")), l._VERSION, l._RELEASE, _VERSION))
 
 function d(str1, str2, expected, alg, insensitive)
 	local value 

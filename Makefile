@@ -1,7 +1,7 @@
-# $Id: Makefile,v 1.10 2011-04-15 17:35:52 tomas Exp $
+# $Id: Makefile,v 1.12 2011-12-21 13:37:55 tomas Exp $
 
 PKG=stringdistance
-V=1.0
+V=1.1.0
 
 DIST_DIR=$(PKG)-$V
 DOCS= doc/index.html doc/license.html doc/examples.html doc/stringdistance.png
@@ -12,12 +12,13 @@ DIST_TST=$(DIST_DIR)/tests
 PKG_FILE=$(DIST_DIR).tar.gz
 LIBNAME=$(PKG).so
 
+LUA_INC=/usr/local/include
 LUA=/usr/local/bin/lua
 LUALIB_DIR=/usr/local/lib/lua/5.1
 
 
 $(LIBNAME): $(SRC)
-	gcc -I/usr/local/include -I/usr/include/lua5.1 -shared -fPIC -Wall -O2 -o $(LIBNAME) $(SRC)
+	gcc -I$(LUA_INC) -shared -fPIC -Wall -O2 -o $(LIBNAME) $(SRC)
 
 install: $(LIBNAME)
 	cp $(LIBNAME) $(LUALIB_DIR)
